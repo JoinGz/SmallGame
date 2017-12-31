@@ -105,7 +105,7 @@
 		</div>
 		<div class="div">
 			<input type="button" value="Begin" onclick="go()" />
-			<input type="button" value="Stop" onclick="stop()" @click="add" />
+			<input type="button" value="Stop" onmousedown="stop()" @mousedown="add" />
 		</div>
 		<table v-if="score.length">
 			<thead>
