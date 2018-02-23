@@ -7,6 +7,7 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 		<title>测试你的反应力</title>
 		<script src="js/vue.min.js"></script>
+		<script src="js/touch.js"></script>
 		<style>
 			html,
 			body {
@@ -86,49 +87,55 @@
 			table thead {
 				border-bottom: 2px solid #ddd;
 			}
-			h2{
-				margin: 35px 0 25px 0 ;
+			
+			h2 {
+				margin: 35px 0 25px 0;
 			}
-			p{
+			
+			p {
 				margin: 25px 0;
-			};
+			}
+			
+			;
 		</style>
 	</head>
 
 	<body>
-		<div id ="bo">
-			
-		<div class="center">
-			<h2>反应力小测试</h2>
-			<p>点击Begin后开始，屏幕背景颜色变化后以最快的速度锤击Stop即可！</p>
-			<p>你的最佳分数：<span>{{bestnum}}</span></p>
-		</div>
-		<div class="div">
-			<input type="button" value="Begin" onclick="go()" />
-			<input type="button" value="Stop" onmousedown="stop()" @mousedown="add" />
-		</div>
-		<table v-if="score.length">
-			<thead>
-				<tr>
-					<th>次数</th>
-					<th>分数</th>
-					<th>评价</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="(val, key) in score">
-					<td>{{key+1}}</td>
-					<td>{{val.score}}s</td>
-					<td>{{val.pinjia}}</td>
-				</tr>
-				<tr>
-					<td colspan="2" style="padding-top: 0;"><p>平均分：{{myname}}s</p></td>
-					<td colspan="1">
-						<input type="button" @click="empty" value="清空数据" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div id="bo">
+
+			<div class="center">
+				<h2>反应力小测试</h2>
+				<p>点击Begin后开始，屏幕背景颜色变化后以最快的速度锤击Stop即可！</p>
+				<p>你的最佳分数：<span>{{bestnum}}</span></p>
+			</div>
+			<div class="div">
+				<input type="button" value="Begin" onclick="go()" />
+				<input type="button" value="Stop" onmousedown="stop()" @mousedown="add" />
+			</div>
+			<table v-if="score.length">
+				<thead>
+					<tr>
+						<th>次数</th>
+						<th>分数</th>
+						<th>评价</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="(val, key) in score">
+						<td>{{key+1}}</td>
+						<td>{{val.score}}s</td>
+						<td>{{val.pinjia}}</td>
+					</tr>
+					<tr>
+						<td colspan="2" style="padding-top: 0;">
+							<p>平均分：{{myname}}s</p>
+						</td>
+						<td colspan="1">
+							<input type="button" @click="empty" value="清空数据" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</body>
 	<script>
@@ -139,6 +146,7 @@
 		var nobegin = false; // 控制先点结束的玩家
 		var onceBegin = true; //控制只能进来一次
 		var vueok = false;
+
 		function go() {
 			if(onceBegin) {
 				onceBegin = false;
@@ -165,7 +173,7 @@
 			} else if(nobegin == true) {
 				vueok = false;
 				alert("别慌，等待一下");
-				
+
 				return;
 			} else if(nobegin == false) {
 				vueok = false;
@@ -188,54 +196,57 @@
 	<script>
 		window.onload = function() {
 			new Vue({
-				el:"#bo",
-				data:{
-					score:[],
-					a:"",
+				el: "#bo",
+				data: {
+					score: [],
+					a: "",
 				},
-				methods:{
-					add:function(){
-						if(vueok){
+				methods: {
+					add: function() {
+						if(vueok) {
 							this.a = a;
 							this.score.push({
-							score:this.a,
-							pinjia:"666",
-							
-						})
+								score: this.a,
+								pinjia: "666",
+
+							})
 						}
 					},
-					empty:function(){
+					empty: function() {
 						this.score = [];
 					}
 				},
 				computed: {
-					myname:function(){
+					myname: function() {
 						var arr = this.score;
 						var sco = 0;
 						var num = 0;
-						for(var i = 0 ; i <arr.length ; i++){
+						for(var i = 0; i < arr.length; i++) {
 							sco += arr[i].score;
 						}
-						num = (sco /arr.length).toPrecision(3);
+						num = (sco / arr.length).toPrecision(3);
 						return num
 					},
-					bestnum:function(){
+					bestnum: function() {
 						var sco1 = [];
 						var arr = this.score;
-						for(var i = 0 ; i <arr.length;i++){
-							sco1[i]=arr[i].score;
+						for(var i = 0; i < arr.length; i++) {
+							sco1[i] = arr[i].score;
 						}
 						var num = Math.min.apply(null, sco1);
-						if(num=="Infinity"){
-							return  '0.00s';
-						}else{
-							return  num+'s';
+						if(num == "Infinity") {
+							return '0.00s';
+						} else {
+							return num + 's';
 						}
-						
+
 					}
 				}
 			})
 		}
+		window.addEventListener(function() {
+			FastClick.attach(document.body);
+		}, false);
 	</script>
 
 </html>
