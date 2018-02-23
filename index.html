@@ -22,7 +22,6 @@
 			[type="button"] {
 				padding: 6px 12px;
 				background: #337ab7;
-				border: 1px solid transparent;
 				outline: 0;
 				margin-bottom: 0;
 				font-size: 14px;
@@ -109,7 +108,7 @@
 				<p>你的最佳分数：<span>{{bestnum}}</span></p>
 			</div>
 			<div class="div">
-				<input type="button" value="Begin" onclick="go()" />
+				<input type="button" value="Begin"  />
 				<input type="button" value="Stop" onmousedown="stop()" @mousedown="add" />
 			</div>
 			<table v-if="score.length">
@@ -148,6 +147,7 @@
 		var vueok = false;
 
 		function go() {
+			alert(1);
 			if(onceBegin) {
 				onceBegin = false;
 				nobegin = true;
@@ -243,6 +243,19 @@
 					}
 				}
 			})
+			var begin = document.querySelector("input");
+			begin.addEventListener("touchend",function(e){
+				console.log("heiheihei");
+				e.preventDefault();
+			})
+			begin.addEventListener("touchstart",function(e){
+//				console.log("heiheihei");
+				e.preventDefault();
+			})
+			begin.addEventListener("click",function(){
+				go();
+			})
+			
 		}
 		window.addEventListener(function() {
 			FastClick.attach(document.body);
