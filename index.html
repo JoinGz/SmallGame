@@ -108,8 +108,8 @@
 				<p>你的最佳分数：<span>{{bestnum}}</span></p>
 			</div>
 			<div class="div">
-				<input type="button" value="Begin"  />
-				<input type="button" value="Stop" onmousedown="stop()" @mousedown="add" />
+				<input type="button" value="Begin" />
+				<input type="button" value="Stop" @mousedown="add()" />
 			</div>
 			<table v-if="score.length">
 				<thead>
@@ -145,44 +145,18 @@
 		var nobegin = false; // 控制先点结束的玩家
 		var onceBegin = true; //控制只能进来一次
 		var vueok = false;
+		var mobilevue = false;
 
 		function go() {
-			alert(1);
 			if(onceBegin) {
+				mobilevue = true;
 				onceBegin = false;
 				nobegin = true;
 				var n = Math.floor(Math.random() * (5000 - 300 + 1) + 300);
+				vueok = true;
 				setTimeout(changeBg, n);
 			} else {
 				alert("已经开始，请等待变色，然后点击结束")
-			}
-
-		}
-
-		function stop() {
-			if(beginbutton) {
-				overtime = new Date();
-				a = (overtime.getTime() - begintime.getTime()) / 1000;
-				alert('反应了 ' + a + ' 秒');
-				beginbutton = false;
-				nobegin = false;
-				onceBegin = true;
-				begintime = null;
-				vueok = true;
-				document.body.style.background = "#ccc";
-			} else if(nobegin == true) {
-				vueok = false;
-				alert("别慌，等待一下");
-
-				return;
-			} else if(nobegin == false) {
-				vueok = false;
-				alert("先点击开始");
-				return;
-			} else {
-				vueok = false;
-				alert("兄弟，还没开始呢");
-				return;
 			}
 
 		}
@@ -191,6 +165,10 @@
 			document.body.style.background = "green";
 			begintime = new Date();
 			beginbutton = true;
+		}
+
+		function isMobile() {
+			return navigator.userAgent.match(/(iphone|ipad|ipod|ios|android|mobile|blackberry|iemobile|mqqbrowser|juc|fennec|wosbrowser|browserng|Webos|symbian|windows phone)/i);
 		}
 	</script>
 	<script>
@@ -203,13 +181,37 @@
 				},
 				methods: {
 					add: function() {
+						if(beginbutton) {
+							overtime = new Date();
+							a = (overtime.getTime() - begintime.getTime()) / 1000;
+							console.log('反应了 ' + a + ' 秒');
+							beginbutton = false;
+							nobegin = false;
+							onceBegin = true;
+							begintime = null;
+							vueok = true;
+							document.body.style.background = "#ccc";
+						} else if(nobegin == true) {
+							vueok = false;
+							alert("别慌，等待一下");
+							return;
+						} else if(nobegin == false) {
+							vueok = false;
+							alert("先点击开始");
+							return;
+						} else {
+							vueok = false;
+							alert("兄弟，还没开始呢");
+							return;
+						}
 						if(vueok) {
 							this.a = a;
 							this.score.push({
 								score: this.a,
 								pinjia: "666",
 
-							})
+							});
+
 						}
 					},
 					empty: function() {
@@ -243,19 +245,19 @@
 					}
 				}
 			})
-			var begin = document.querySelector("input");
-			begin.addEventListener("touchend",function(e){
-				console.log("heiheihei");
-				e.preventDefault();
-			})
-			begin.addEventListener("touchstart",function(e){
-//				console.log("heiheihei");
-				e.preventDefault();
-			})
-			begin.addEventListener("click",function(){
-				go();
-			})
-			
+			var begin1 = document.querySelectorAll("input")[0];
+			var begin2 = document.querySelectorAll("input")[1];
+
+			if(isMobile()) {
+				begin1.addEventListener("touchend", function(e) {
+					go();
+				});
+				
+			} else {
+				begin1.addEventListener("click", function() {
+					go();
+				});
+			}
 		}
 		window.addEventListener(function() {
 			FastClick.attach(document.body);
